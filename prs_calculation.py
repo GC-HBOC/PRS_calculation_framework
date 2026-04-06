@@ -9,7 +9,7 @@ parser = argparse.ArgumentParser(epilog="See https://github.com/GC-HBOC/PRS_calc
 parser.add_argument("-o", "--output", help="Specification of CanRisk-compatible output VCF file. Default: Input VCF file name with suffix *.canrisk.vcf")
 parser.add_argument("-a", "--anc", type=str, choices=['AFR', 'EAS', 'EUR', 'SAS'], help="Specification of presumed ancestry (AFR, EAS, EUR, or SAS). If set, ancestry check is omitted.")
 parser.add_argument("-ap", "--anc_prefix", action = 'store_true', help="If set, a prefix specifying predicted or pre-defined ancestry will be added to the output file name.")
-parser.add_argument("-dec", "--dec_places", type=int, choices=range(0,10), default=3, help="Maximum number of decimal places in terminal output (default: 3).")
+parser.add_argument("-dec", "--dec_places", type=int, choices=range(1,9), default=3, help="Maximum number of decimal places in terminal output (default: 3).")
 parser.add_argument("-d", "--min_depth", type=int, default=10, help="Minimum read depth required for genotyping (default: 10).")
 parser.add_argument("prs_template_file", help="PRS template file in TSV format.")
 parser.add_argument("VCF_file", help="Sample VCF file, generated via BCFtools. File ending has to be *.vcf")
