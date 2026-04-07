@@ -1,6 +1,6 @@
 Note that suffixes `*_hg19.vcf` or `_hg38.vcf` have to match `<reference.fa>` and the reference genome to which the sequencing reads in your input BAM/CRAM data were mapped to.
 
-Do you miss a PRS model? Please do not hesitate to create an [issue](https://github.com/GC-HBOC/PRS_calculation_framework/issues).
+Are you missing a PRS model or have found an error? Please do not hesitate to create an [issue](https://github.com/GC-HBOC/PRS_calculation_framework/issues).
 
 ### BCAC_309
 

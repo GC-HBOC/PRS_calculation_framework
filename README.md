@@ -58,7 +58,7 @@ options:
 
 ```
 
-PRS template TSV files are available from XXX
+PRS template TSV files are available from [./template_tsv](https://github.com/GC-HBOC/PRS_calculation_framework/tree/main/template_tsv/)
 
 ### Example output
 
