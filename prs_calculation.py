@@ -137,13 +137,20 @@ with open(INPUT_VCF) as infile:
 sys.stderr.write('### Sample ' + SAMPLE + '\n' )
 
 
-sys.stderr.write('Found ' + str(sum(FOUND)) + ' of ' + str(len(FOUND)) +' PRS variants!\n')
+sys.stderr.write('=> Found ' + str(sum(FOUND)) + ' of ' + str(len(FOUND)) +' PRS variants\n')
+nvalid = 0
 if sum(FOUND) < len(FOUND): sys.stderr.write('Could not find:\n' )
 for i in range(len(FOUND)):
     if FOUND[i] == 0:
         REF_VAR = REF_VARS[i]
-        sys.stderr.write('\t'.join([REF_VAR[0], REF_VAR[1], REF_VAR[2], REF_VAR[3]]) + '\n') 
-
+        sys.stderr.write('\t'.join([REF_VAR[0], REF_VAR[1], REF_VAR[2], REF_VAR[3]]) + '\n')
+    else:
+        if GT[i] in ['0/0', '0/1', '1/1'] and DP[i] >= MINDP:
+            nvalid += 1
+if nvalid == 1:
+    sys.stderr.write('=> Genotype of ' + str(nvalid) + ' variant will be included in PRS calculation\n')
+else:
+    sys.stderr.write('=> Genotypes of ' + str(nvalid) + ' variants will be included in PRS calculation\n')
 
 ANCS = ["AFR", "EAS", "EUR", "SAS"]
 if ANC == None:
@@ -171,7 +178,7 @@ if ANC == None:
             ANC_GT.append(float(AFS[REF_VARS[i]][-1]))
             
     sys.stderr.write('### ANCESTRY CHECK\n' )
-    sys.stderr.write('Using genotypes from ' + str(len(REF_VARS)-c) + ' out of ' + str(len(REF_VARS)) + ' variants\n' )
+    #sys.stderr.write('Using genotypes from ' + str(len(REF_VARS)-c) + ' out of ' + str(len(REF_VARS)) + ' variants\n' )
 
     # AFR
     af = [AFS[_][0] for _ in REF_VARS]
@@ -229,9 +236,8 @@ sys.stderr.write('### WRITING OUTPUT VCF\n' )
 with open(OFNAME, 'w') as outfile:
     outfile.write("##fileformat=VCFv4.2\n")
     outfile.write("##source=GC-HBOC-CanRisk-Pipeline_v" + VERSION + "\n")
-    outfile.write('##FORMAT=<ID=GT,Number=1,Type=String,Description="Genotype">\n')
     outfile.write('##INFO=<ID=DP,Number=1,Type=Integer,Description="Total read depth at the locus">\n')
-    outfile.write('##FORMAT=<ID=DS,Number=1,Type=Float,Description="Imputed Alternate Allele Dosage">\n')
+    outfile.write('##FORMAT=<ID=GT,Number=1,Type=String,Description="Genotype">\n')
     outfile.write('##FORMAT=<ID=DS,Number=1,Type=Float,Description="Imputed Alternate Allele Dosage">\n')
     outfile.write("#CHROM\tPOS\tID\tREF\tALT\tQUAL\tFILTER\tINFO\tFORMAT\t" +  SAMPLE + "\n")
     
@@ -314,6 +320,4 @@ elif ANC == "SAS":
     elif SAS_SD == None:
         sys.stderr.write("Standard deviation for SAS PRS unkonwn\n")
     else: ZSCORE = (PRS_SUM - SAS_MEAN)/SAS_SD   
-if ZSCORE: sys.stderr.write("=> Normalized z-score is " + str(round(ZSCORE, args.dec_places)) +"\n")
-
-
+if ZSCORE or ZSCORE == 0: sys.stderr.write("=> Normalized z-score is " + str(round(ZSCORE, args.dec_places)) +"\n")

@@ -62,5 +62,27 @@ PRS template TSV files are available from [./template_tsv](https://github.com/GC
 
 ### Example output
 
-
+```
+### Sample NA12718
+=> Found 308 of 309 PRS variants
+Could not find:
+4	187503758	A	T
+=> Genotypes of 305 variants will be included in PRS calculation
+### ANCESTRY CHECK
+AFR data point is -2.546 -0.823 0.577
+EAS data point is 1.73 -1.521 0.423
+EUR data point is 0.292 1.443 0.139
+SAS data point is 0.384 0.345 1.568
+Sample data point is 0.216 1.332 -0.451
+Euclidean distance to AFR data point is 3.652
+Euclidean distance to EAS data point is 3.346
+Euclidean distance to EUR data point is 0.605
+Euclidean distance to SAS data point is 2.253
+=> Sample is EUR
+### WRITING OUTPUT VCF
+=> OUTPUT VCF written to NA12718.canrisk.vcf
+### PRS
+=> Raw PRS is -1.302
+=> Normalized z-score is -1.573
+```
 
