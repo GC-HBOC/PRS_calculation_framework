@@ -1,9 +1,9 @@
 import sys
 import argparse
 import os
+import math
 
 # implementation based exclusively on Python standard library
-
 
 parser = argparse.ArgumentParser(epilog="See https://github.com/GC-HBOC/PRS_calculation_framework/ for further documentation.")
 parser.add_argument("-o", "--output", help="Specification of CanRisk-compatible output VCF file. Default: Input VCF file name with suffix *.canrisk.vcf")
@@ -320,4 +320,8 @@ elif ANC == "SAS":
     elif SAS_SD == None:
         sys.stderr.write("Standard deviation for SAS PRS unkonwn\n")
     else: ZSCORE = (PRS_SUM - SAS_MEAN)/SAS_SD   
-if ZSCORE or ZSCORE == 0: sys.stderr.write("=> Normalized z-score is " + str(round(ZSCORE, args.dec_places)) +"\n")
+if ZSCORE or ZSCORE == 0: 
+    sys.stderr.write("=> Normalized z-score is " + str(round(ZSCORE, args.dec_places)) +"\n")
+    PERC = 0.5 * (1 + math.erf(ZSCORE / math.sqrt(2))) * 100
+    sys.stderr.write("=> Left-tailed percentile is " + str(round(PERC, args.dec_places)) +"\n")
+    
