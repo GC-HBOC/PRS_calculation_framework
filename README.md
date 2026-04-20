@@ -84,5 +84,6 @@ Euclidean distance to SAS data point is 2.253
 ### PRS
 => Raw PRS is -1.302
 => Normalized z-score is -1.573
+=> Left-tailed percentile is 5.791
 ```
 
