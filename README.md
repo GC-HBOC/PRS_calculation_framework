@@ -22,7 +22,7 @@ PRS calculation starts from mapped sequencing reads in [BAM](https://samtools.gi
 ### Command line call
 
 ```
-bcftools mpileup -f <reference.fa> <BAM|CRAM file> -R <specification.vcf> | bcftools call -c - | bcftools norm -m- <reference.fa> -
+bcftools mpileup -f <reference.fa> <BAM|CRAM file> -R <specification.vcf> | bcftools call -c - | bcftools norm -m- -f <reference.fa> -
 ```
 
 Pre-computed input VCF files (`<specification.vcf>`) can be obtained from [./mpileup_vcf](https://github.com/GC-HBOC/PRS_calculation_framework/tree/main/mpileup_vcf/).
