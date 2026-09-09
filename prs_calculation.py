@@ -231,6 +231,7 @@ sys.stderr.write('=> Sample is ' + ANC + '\n' )
 if args.anc_prefix: OFNAME = os.path.join(os.path.dirname(OFNAME), ANC + '_' + os.path.basename(OFNAME))
 
 PRS_SUM = 0
+PRS_SUM_MIN, PRS_SUM_MAX = 0, 0
 sys.stderr.write('### WRITING OUTPUT VCF\n' ) 
 
 with open(OFNAME, 'w') as outfile:
@@ -258,19 +259,33 @@ with open(OFNAME, 'w') as outfile:
                 anc_ind = ANCS.index(ANC)
                 outfile.write('.\tGT:DS\t./.:' + str(AFS[REF_VARS[i]][anc_ind] * 2) )
                 PRS_SUM += AFS[REF_VARS[i]][anc_ind] * 2 * WEIGHTS[i]
+                if WEIGHTS[i] >= 0:
+                    PRS_SUM_MAX += 2 * WEIGHTS[i]
+                else:
+                    PRS_SUM_MIN += 2 * WEIGHTS[i]
             else:
                 outfile.write('DP=' + str(DP[i]) + '\t')
                 if not REVERSE_DICT[REF_VARS[i]]:
                     outfile.write('GT\t' + GT[i])
-                    if GT[i] == '0/1': PRS_SUM += WEIGHTS[i]
-                    elif GT[i] == '1/1': PRS_SUM += (2 * WEIGHTS[i])
+                    if GT[i] == '0/1': 
+                        PRS_SUM += WEIGHTS[i]
+                        PRS_SUM_MIN += WEIGHTS[i]
+                        PRS_SUM_MAX += WEIGHTS[i]
+                    elif GT[i] == '1/1': 
+                        PRS_SUM += (2 * WEIGHTS[i])
+                        PRS_SUM_MIN += (2 * WEIGHTS[i])
+                        PRS_SUM_MAX += (2 * WEIGHTS[i])
                 else:
                     if GT[i] == '0/0':
                         outfile.write('GT\t1/1')
                         PRS_SUM += 2 * WEIGHTS[i]
+                        PRS_SUM_MIN += (2 * WEIGHTS[i])
+                        PRS_SUM_MAX += (2 * WEIGHTS[i])
                     elif GT[i] == '0/1':
                         outfile.write('GT\t0/1')
                         PRS_SUM += WEIGHTS[i]
+                        PRS_SUM_MIN += WEIGHTS[i]
+                        PRS_SUM_MAX += WEIGHTS[i]
                     else:
                          outfile.write('GT\t0/0')          
                     
@@ -279,6 +294,10 @@ with open(OFNAME, 'w') as outfile:
             anc_ind = ANCS.index(ANC)
             outfile.write('GT:DS\t./.:' + str(AFS[REF_VARS[i]][anc_ind] * 2) )
             PRS_SUM += AFS[REF_VARS[i]][anc_ind] * 2 * WEIGHTS[i]
+            if WEIGHTS[i] >= 0:
+                PRS_SUM_MAX += 2 * WEIGHTS[i]
+            else:
+                PRS_SUM_MIN += 2 * WEIGHTS[i]
         outfile.write('\n')
 
 
@@ -286,8 +305,8 @@ with open(OFNAME, 'w') as outfile:
 sys.stderr.write('=> OUTPUT VCF written to ' + OFNAME + '\n' )
 
 sys.stderr.write('### PRS\n' )
-sys.stderr.write('=> Raw PRS is ' + str(round(PRS_SUM, args.dec_places)) + '\n')
-ZSCORE = None
+sys.stderr.write('=> Raw PRS is ' + str(round(PRS_SUM, args.dec_places)) + ' (min=' + str(round(PRS_SUM_MIN, args.dec_places)) + ', max=' + str(round(PRS_SUM_MAX, args.dec_places))  + ')' +  '\n')
+ZSCORE, MIN_ZSCORE, MAX_ZSCORE = None, None, None
 if ANC == "AFR":
     if AFR_MEAN == None and AFR_SD == None:
         sys.stderr.write("Mean and standard deviation for AFR PRS unkonwn\n")
@@ -295,7 +314,10 @@ if ANC == "AFR":
         sys.stderr.write("Mean for AFR PRS unkonwn\n")
     elif AFR_SD == None:
         sys.stderr.write("Standard deviation for AFR PRS unkonwn\n")
-    else: ZSCORE = (PRS_SUM - AFR_MEAN)/AFR_SD
+    else:
+        ZSCORE = (PRS_SUM - AFR_MEAN)/AFR_SD
+        ZSCORE_MIN = (PRS_SUM_MIN - AFR_MEAN)/AFR_SD
+        ZSCORE_MAX = (PRS_SUM_MAX - AFR_MEAN)/AFR_SD
 elif ANC == "EAS":
     if EAS_MEAN == None and EAS_SD == None:
         sys.stderr.write("Mean and standard deviation for EAS PRS unkonwn\n")
@@ -303,7 +325,10 @@ elif ANC == "EAS":
         sys.stderr.write("Mean for EAS PRS unkonwn\n")
     elif EAS_SD == None:
         sys.stderr.write("Standard deviation for EAS PRS unkonwn\n")
-    else: ZSCORE = (PRS_SUM - EAS_MEAN)/EAS_SD
+    else:
+        ZSCORE = (PRS_SUM - EAS_MEAN)/EAS_SD
+        ZSCORE_MIN = (PRS_SUM_MIN - EAS_MEAN)/EAS_SD
+        ZSCORE_MAX = (PRS_SUM_MAX - EAS_MEAN)/EAS_SD
 elif ANC == "EUR":
     if EUR_MEAN == None and EUR_SD == None:
         sys.stderr.write("Mean and standard deviation for EUR PRS unkonwn\n")
@@ -311,7 +336,10 @@ elif ANC == "EUR":
         sys.stderr.write("Mean for EUR PRS unkonwn\n")
     elif EUR_SD == None:
         sys.stderr.write("Standard deviation for EUR PRS unkonwn\n")
-    else: ZSCORE = (PRS_SUM - EUR_MEAN)/EUR_SD
+    else:
+        ZSCORE = (PRS_SUM - EUR_MEAN)/EUR_SD
+        ZSCORE_MIN = (PRS_SUM_MIN - EUR_MEAN)/EUR_SD
+        ZSCORE_MAX = (PRS_SUM_MAX - EUR_MEAN)/EUR_SD
 elif ANC == "SAS":
     if SAS_MEAN == None and SAS_SD == None:
         sys.stderr.write("Mean and standard deviation for SAS PRS unkonwn\n")
@@ -319,9 +347,14 @@ elif ANC == "SAS":
         sys.stderr.write("Mean for SAS PRS unkonwn\n")
     elif SAS_SD == None:
         sys.stderr.write("Standard deviation for SAS PRS unkonwn\n")
-    else: ZSCORE = (PRS_SUM - SAS_MEAN)/SAS_SD   
+    else:
+        ZSCORE = (PRS_SUM - SAS_MEAN)/SAS_SD
+        ZSCORE_MIN = (PRS_SUM_MIN - SAS_MEAN)/SAS_SD
+        ZSCORE_MAX = (PRS_SUM_MAX - SAS_MEAN)/SAS_SD
 if ZSCORE or ZSCORE == 0: 
-    sys.stderr.write("=> Normalized z-score is " + str(round(ZSCORE, args.dec_places)) +"\n")
+    sys.stderr.write("=> Normalized z-score is " + str(round(ZSCORE, args.dec_places)) + " (min=" + str(round(ZSCORE_MIN, args.dec_places))  + ', max=' + str(round(ZSCORE_MAX, args.dec_places))   + ")\n")
     PERC = 0.5 * (1 + math.erf(ZSCORE / math.sqrt(2))) * 100
-    sys.stderr.write("=> Left-tailed percentile is " + str(round(PERC, args.dec_places)) +"\n")
+    PERC_MIN = 0.5 * (1 + math.erf(ZSCORE_MIN / math.sqrt(2))) * 100
+    PERC_MAX = 0.5 * (1 + math.erf(ZSCORE_MAX / math.sqrt(2))) * 100
+    sys.stderr.write("=> Left-tailed percentile is " + str(round(PERC, args.dec_places)) + ' (min=' + str(round(PERC_MIN, args.dec_places))  + ', max=' + str(round(PERC_MAX, args.dec_places)) +")\n")
     
