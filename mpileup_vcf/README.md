@@ -10,6 +10,19 @@ The model is applicable to samples from women of African \([BCAC_309_PRS-UKB_afr
 
 These input VCF files can alse be used for genotyping of the BCAC 307 PRS models: [BCAC_307_PRS-UKB_african.prs](https://github.com/CCGE-BOADICEA/SHARE-PRScalculation/blob/main/PRSmodels_CanRisk/BCAC_307_PRS-UKB_african.prs), [BCAC_307_PRS-UKB_eastAsian.prs](https://github.com/CCGE-BOADICEA/SHARE-PRScalculation/blob/main/PRSmodels_CanRisk/BCAC_307_PRS-UKB_eastAsian.prs), [BCAC_307_PRS-UKB_european.prs](https://github.com/CCGE-BOADICEA/SHARE-PRScalculation/blob/main/PRSmodels_CanRisk/BCAC_307_PRS-UKB_european.prs), and [BCAC_307_PRS-UKB_southAsian.prs](https://github.com/CCGE-BOADICEA/SHARE-PRScalculation/blob/main/PRSmodels_CanRisk/BCAC_307_PRS-UKB_southAsian.prs) . These models ignore two loci associated with [NM_007194.4(CHEK2):c.1100del](https://www.ncbi.nlm.nih.gov/clinvar/variation/128042/) \[[Mavaddat et al. 2023](https://doi.org/10.1158/1055-9965.epi-22-0756)\], and are also provided for VCF upload in CanRisk.
 
+### BCAC_313
+
+PRS model for primary breast cancers in women of European descent \[[Mavaddat et al. 2019](https://doi.org/10.1016/j.ajhg.2018.11.002)\]. Provided for VCF upload in [CanRisk](https://www.canrisk.org/).
+
+5 Loci are imputed per default:
+  * 2-217955896-GA-G (hg19)
+  * 4-187503758-A-T (hg19), due to AF=0.05 for 4-187503758-A-G in non-Finnish European gnomAD genomes
+  * 5-58241712-C-T (hg19)
+  * 6-152022664-CAAAAAAA-C (hg19)
+  * 10-38523626-C-A (hg19)
+
+
+
 ### BRIDGES_306
 
 PRS model for primary breast cancers in women of European descent \[[Mavaddat et al. 2023](https://doi.org/10.1158/1055-9965.epi-22-0756)\]. Provided for VCF upload in [CanRisk](https://www.canrisk.org/).
