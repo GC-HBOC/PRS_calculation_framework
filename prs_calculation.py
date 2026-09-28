@@ -145,7 +145,7 @@ for i in range(len(FOUND)):
         REF_VAR = REF_VARS[i]
         sys.stderr.write('\t'.join([REF_VAR[0], REF_VAR[1], REF_VAR[2], REF_VAR[3]]) + '\n')
     else:
-        if GT[i] in ['0/0', '0/1', '1/1'] and DP[i] >= MINDP:
+        if DP[i] >= MINDP:
             nvalid += 1
 if nvalid == 1:
     sys.stderr.write('=> Genotype of ' + str(nvalid) + ' variant will be included in PRS calculation\n')
@@ -158,7 +158,7 @@ if ANC == None:
     ANC_GT = []
     c = 0
     for i in range(len(FOUND)):
-        if FOUND[i] and GT[i] in ['0/0', '0/1', '1/1'] and DP[i] >= MINDP:
+        if FOUND[i] and DP[i] >= MINDP:
             if not REVERSE_DICT[REF_VARS[i]]:
                 if GT[i] == '0/0':
                     ANC_GT.append(0)
