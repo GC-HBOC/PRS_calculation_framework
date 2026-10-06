@@ -212,15 +212,21 @@ if ANC == None:
     for pc, gt in zip(PC2, ANC_GT): Y += pc*gt
     Z = 0
     for pc, gt in zip(PC3, ANC_GT): Z += pc*gt
-    sys.stderr.write('Sample data point is ' + str(round(X, args.dec_places)) + ' ' + str(round(Y, args.dec_places)) + ' ' + str(round(Z, args.dec_places)) + '\n' )
     edafr = ( (X-AFR_X)**2 + (Y - AFR_Y)**2 + (Z - AFR_Z)**2 )**(1/2) 
-    sys.stderr.write('Euclidean distance to AFR data point is ' + str(round(edafr, args.dec_places)) + '\n' )
-    edeas = ( (X-EAS_X)**2 + (Y - EAS_Y)**2 + (Z - EAS_Z)**2 )**(1/2) 
-    sys.stderr.write('Euclidean distance to EAS data point is ' + str(round(edeas, args.dec_places)) + '\n' )
-    edeur = ( (X-EUR_X)**2 + (Y - EUR_Y)**2 + (Z- EUR_Z)**2 )**(1/2) 
-    sys.stderr.write('Euclidean distance to EUR data point is ' + str(round(edeur, args.dec_places)) + '\n' )
-    edsas = ( (X-SAS_X)**2 + (Y - SAS_Y)**2 + (Z - SAS_Z)**2 )**(1/2) 
-    sys.stderr.write('Euclidean distance to SAS data point is ' + str(round(edsas, args.dec_places)) + '\n' )
+    edeas = ( (X-EAS_X)**2 + (Y - EAS_Y)**2 + (Z - EAS_Z)**2 )**(1/2)
+    edeur = ( (X-EUR_X)**2 + (Y - EUR_Y)**2 + (Z- EUR_Z)**2 )**(1/2)
+    edsas = ( (X-SAS_X)**2 + (Y - SAS_Y)**2 + (Z - SAS_Z)**2 )**(1/2)
+    denominator = 1/edafr**2 + 1/edeas**2 + 1/edeur**2 + 1/edsas**2
+
+    sys.stderr.write('Sample data point is ' + str(round(X, args.dec_places)) + ' ' + str(round(Y, args.dec_places)) + ' ' + str(round(Z, args.dec_places)) + '\n' )
+    
+    sys.stderr.write('Euclidean distance to AFR data point is ' + str(round(edafr, args.dec_places)) + ' (' +  str(round(100 * (1/edafr**2)/denominator, 2)) + '%)\n' )
+     
+    sys.stderr.write('Euclidean distance to EAS data point is ' + str(round(edeas, args.dec_places)) + ' (' +  str(round(100 *  (1/edeas**2)/denominator, 2)) + '%)\n' )
+    
+    sys.stderr.write('Euclidean distance to EUR data point is ' + str(round(edeur, args.dec_places)) + ' (' +  str(round(100 *  (1/edeur**2)/denominator, 2)) + '%)\n' )
+
+    sys.stderr.write('Euclidean distance to SAS data point is ' + str(round(edsas, args.dec_places)) + ' (' +  str(round(100 *  (1/edsas**2)/denominator, 2)) + '%)\n' )
     #print(edafr, edeas, edeur, edsas)
 
     minind = [edafr, edeas, edeur, edsas].index(min([edafr, edeas, edeur, edsas]))
