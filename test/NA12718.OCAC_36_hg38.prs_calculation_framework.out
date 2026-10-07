@@ -1,0 +1,20 @@
+### Sample NA12718
+=> Found 36 of 36 PRS variants
+=> Genotypes of 36 variants will be included in PRS calculation
+### ANCESTRY CHECK
+AFR data point is -1.146 0.014 0.353
+EAS data point is 0.414 -0.168 0.246
+EUR data point is -0.221 0.751 0.149
+SAS data point is 0.013 0.447 0.645
+Sample data point is -0.648 0.72 0.201
+Euclidean distance to AFR data point is 0.878 (15.09%)
+Euclidean distance to EAS data point is 1.385 (6.06%)
+Euclidean distance to EUR data point is 0.431 (62.47%)
+Euclidean distance to SAS data point is 0.842 (16.39%)
+=> Sample is EUR
+### WRITING OUTPUT VCF
+=> OUTPUT VCF written to NA12718.OCAC_36_hg38.canrisk.vcf
+### PRS
+=> Raw PRS is -0.671 (min=-0.671, max=-0.671)
+=> Normalized z-score is -1.306 (min=-1.306, max=-1.306)
+=> Left-tailed percentile is 9.57 (min=9.57, max=9.57)

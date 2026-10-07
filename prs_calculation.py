@@ -134,23 +134,23 @@ with open(INPUT_VCF) as infile:
             ll = line.rstrip().split('\t')
             SAMPLE = ll[9]
 
-sys.stderr.write('### Sample ' + SAMPLE + '\n' )
+sys.stdout.write('### Sample ' + SAMPLE + '\n' )
 
 
-sys.stderr.write('=> Found ' + str(sum(FOUND)) + ' of ' + str(len(FOUND)) +' PRS variants\n')
+sys.stdout.write('=> Found ' + str(sum(FOUND)) + ' of ' + str(len(FOUND)) +' PRS variants\n')
 nvalid = 0
-if sum(FOUND) < len(FOUND): sys.stderr.write('Could not find:\n' )
+if sum(FOUND) < len(FOUND): sys.stdout.write('Could not find:\n' )
 for i in range(len(FOUND)):
     if FOUND[i] == 0:
         REF_VAR = REF_VARS[i]
-        sys.stderr.write('\t'.join([REF_VAR[0], REF_VAR[1], REF_VAR[2], REF_VAR[3]]) + '\n')
+        sys.stdout.write('\t'.join([REF_VAR[0], REF_VAR[1], REF_VAR[2], REF_VAR[3]]) + '\n')
     else:
         if DP[i] >= MINDP:
             nvalid += 1
 if nvalid == 1:
-    sys.stderr.write('=> Genotype of ' + str(nvalid) + ' variant will be included in PRS calculation\n')
+    sys.stdout.write('=> Genotype of ' + str(nvalid) + ' variant will be included in PRS calculation\n')
 else:
-    sys.stderr.write('=> Genotypes of ' + str(nvalid) + ' variants will be included in PRS calculation\n')
+    sys.stdout.write('=> Genotypes of ' + str(nvalid) + ' variants will be included in PRS calculation\n')
 
 ANCS = ["AFR", "EAS", "EUR", "SAS"]
 if ANC == None:
@@ -177,7 +177,7 @@ if ANC == None:
             c +=1
             ANC_GT.append(float(AFS[REF_VARS[i]][-1]))
             
-    sys.stderr.write('### ANCESTRY CHECK\n' )
+    sys.stdout.write('### ANCESTRY CHECK\n' )
     #sys.stderr.write('Using genotypes from ' + str(len(REF_VARS)-c) + ' out of ' + str(len(REF_VARS)) + ' variants\n' )
 
     # AFR
@@ -185,25 +185,25 @@ if ANC == None:
     X, Y, Z = 0, 0, 0
     for pc1, pc2, pc3, gt in zip(PC1, PC2, PC3, af): X, Y, Z = X + pc1*gt, Y + pc2*gt, Z + pc3*gt
     AFR_X, AFR_Y, AFR_Z = X, Y, Z
-    sys.stderr.write('AFR data point is ' + str(round(X, args.dec_places)) + ' ' + str(round(Y, args.dec_places)) + ' ' + str(round(Z, args.dec_places)) + '\n' )
+    sys.stdout.write('AFR data point is ' + str(round(X, args.dec_places)) + ' ' + str(round(Y, args.dec_places)) + ' ' + str(round(Z, args.dec_places)) + '\n' )
     # EAS
     af = [AFS[_][1] for _ in REF_VARS]
     X, Y, Z = 0, 0, 0
     for pc1, pc2, pc3, gt in zip(PC1, PC2, PC3, af): X, Y, Z = X + pc1*gt, Y + pc2*gt, Z + pc3*gt
     EAS_X, EAS_Y, EAS_Z = X, Y, Z
-    sys.stderr.write('EAS data point is ' + str(round(X, args.dec_places)) + ' ' + str(round(Y, args.dec_places)) + ' ' + str(round(Z, args.dec_places)) + '\n' )
+    sys.stdout.write('EAS data point is ' + str(round(X, args.dec_places)) + ' ' + str(round(Y, args.dec_places)) + ' ' + str(round(Z, args.dec_places)) + '\n' )
     # EUR
     af = [AFS[_][2] for _ in REF_VARS]
     X, Y, Z = 0, 0, 0
     for pc1, pc2, pc3, gt in zip(PC1, PC2, PC3, af): X, Y, Z = X + pc1*gt, Y + pc2*gt, Z + pc3*gt
     EUR_X, EUR_Y, EUR_Z = X, Y, Z
-    sys.stderr.write('EUR data point is ' + str(round(X, args.dec_places)) + ' ' + str(round(Y, args.dec_places)) + ' ' + str(round(Z, args.dec_places)) + '\n' )
+    sys.stdout.write('EUR data point is ' + str(round(X, args.dec_places)) + ' ' + str(round(Y, args.dec_places)) + ' ' + str(round(Z, args.dec_places)) + '\n' )
     # SAS
     af = [AFS[_][3] for _ in REF_VARS]
     X, Y, Z = 0, 0, 0
     for pc1, pc2, pc3, gt in zip(PC1, PC2, PC3, af): X, Y, Z = X + pc1*gt, Y + pc2*gt, Z + pc3*gt
     SAS_X, SAS_Y, SAS_Z = X, Y, Z
-    sys.stderr.write('SAS data point is ' + str(round(X, args.dec_places)) + ' ' + str(round(Y, args.dec_places)) + ' ' + str(round(Z, args.dec_places)) + '\n' )
+    sys.stdout.write('SAS data point is ' + str(round(X, args.dec_places)) + ' ' + str(round(Y, args.dec_places)) + ' ' + str(round(Z, args.dec_places)) + '\n' )
 
 
     X = 0
@@ -218,27 +218,24 @@ if ANC == None:
     edsas = ( (X-SAS_X)**2 + (Y - SAS_Y)**2 + (Z - SAS_Z)**2 )**(1/2)
     denominator = 1/edafr**2 + 1/edeas**2 + 1/edeur**2 + 1/edsas**2
 
-    sys.stderr.write('Sample data point is ' + str(round(X, args.dec_places)) + ' ' + str(round(Y, args.dec_places)) + ' ' + str(round(Z, args.dec_places)) + '\n' )
+    sys.stdout.write('Sample data point is ' + str(round(X, args.dec_places)) + ' ' + str(round(Y, args.dec_places)) + ' ' + str(round(Z, args.dec_places)) + '\n' )
     
-    sys.stderr.write('Euclidean distance to AFR data point is ' + str(round(edafr, args.dec_places)) + ' (' +  str(round(100 * (1/edafr**2)/denominator, 2)) + '%)\n' )
-     
-    sys.stderr.write('Euclidean distance to EAS data point is ' + str(round(edeas, args.dec_places)) + ' (' +  str(round(100 *  (1/edeas**2)/denominator, 2)) + '%)\n' )
-    
-    sys.stderr.write('Euclidean distance to EUR data point is ' + str(round(edeur, args.dec_places)) + ' (' +  str(round(100 *  (1/edeur**2)/denominator, 2)) + '%)\n' )
-
-    sys.stderr.write('Euclidean distance to SAS data point is ' + str(round(edsas, args.dec_places)) + ' (' +  str(round(100 *  (1/edsas**2)/denominator, 2)) + '%)\n' )
+    sys.stdout.write('Euclidean distance to AFR data point is ' + str(round(edafr, args.dec_places)) + ' (' +  str(round(100 * (1/edafr**2)/denominator, 2)) + '%)\n' )    
+    sys.stdout.write('Euclidean distance to EAS data point is ' + str(round(edeas, args.dec_places)) + ' (' +  str(round(100 *  (1/edeas**2)/denominator, 2)) + '%)\n' )
+    sys.stdout.write('Euclidean distance to EUR data point is ' + str(round(edeur, args.dec_places)) + ' (' +  str(round(100 *  (1/edeur**2)/denominator, 2)) + '%)\n' )
+    sys.stdout.write('Euclidean distance to SAS data point is ' + str(round(edsas, args.dec_places)) + ' (' +  str(round(100 *  (1/edsas**2)/denominator, 2)) + '%)\n' )
     #print(edafr, edeas, edeur, edsas)
 
     minind = [edafr, edeas, edeur, edsas].index(min([edafr, edeas, edeur, edsas]))
     ANC = ANCS[minind]
-sys.stderr.write('=> Sample is ' + ANC + '\n' )
+sys.stdout.write('=> Sample is ' + ANC + '\n' )
 
 # OFNAME was specified initially 
 if args.anc_prefix: OFNAME = os.path.join(os.path.dirname(OFNAME), ANC + '_' + os.path.basename(OFNAME))
 
 PRS_SUM = 0
 PRS_SUM_MIN, PRS_SUM_MAX = 0, 0
-sys.stderr.write('### WRITING OUTPUT VCF\n' ) 
+sys.stdout.write('### WRITING OUTPUT VCF\n' ) 
 
 with open(OFNAME, 'w') as outfile:
     outfile.write("##fileformat=VCFv4.2\n")
@@ -308,10 +305,10 @@ with open(OFNAME, 'w') as outfile:
 
 
 
-sys.stderr.write('=> OUTPUT VCF written to ' + OFNAME + '\n' )
+sys.stdout.write('=> OUTPUT VCF written to ' + OFNAME + '\n' )
 
-sys.stderr.write('### PRS\n' )
-sys.stderr.write('=> Raw PRS is ' + str(round(PRS_SUM, args.dec_places)) + ' (min=' + str(round(PRS_SUM_MIN, args.dec_places)) + ', max=' + str(round(PRS_SUM_MAX, args.dec_places))  + ')' +  '\n')
+sys.stdout.write('### PRS\n' )
+sys.stdout.write('=> Raw PRS is ' + str(round(PRS_SUM, args.dec_places)) + ' (min=' + str(round(PRS_SUM_MIN, args.dec_places)) + ', max=' + str(round(PRS_SUM_MAX, args.dec_places))  + ')' +  '\n')
 ZSCORE, MIN_ZSCORE, MAX_ZSCORE = None, None, None
 if ANC == "AFR":
     if AFR_MEAN == None and AFR_SD == None:
@@ -358,9 +355,9 @@ elif ANC == "SAS":
         ZSCORE_MIN = (PRS_SUM_MIN - SAS_MEAN)/SAS_SD
         ZSCORE_MAX = (PRS_SUM_MAX - SAS_MEAN)/SAS_SD
 if ZSCORE or ZSCORE == 0: 
-    sys.stderr.write("=> Normalized z-score is " + str(round(ZSCORE, args.dec_places)) + " (min=" + str(round(ZSCORE_MIN, args.dec_places))  + ', max=' + str(round(ZSCORE_MAX, args.dec_places))   + ")\n")
+    sys.stdout.write("=> Normalized z-score is " + str(round(ZSCORE, args.dec_places)) + " (min=" + str(round(ZSCORE_MIN, args.dec_places))  + ', max=' + str(round(ZSCORE_MAX, args.dec_places))   + ")\n")
     PERC = 0.5 * (1 + math.erf(ZSCORE / math.sqrt(2))) * 100
     PERC_MIN = 0.5 * (1 + math.erf(ZSCORE_MIN / math.sqrt(2))) * 100
     PERC_MAX = 0.5 * (1 + math.erf(ZSCORE_MAX / math.sqrt(2))) * 100
-    sys.stderr.write("=> Left-tailed percentile is " + str(round(PERC, args.dec_places)) + ' (min=' + str(round(PERC_MIN, args.dec_places))  + ', max=' + str(round(PERC_MAX, args.dec_places)) +")\n")
+    sys.stdout.write("=> Left-tailed percentile is " + str(round(PERC, args.dec_places)) + ' (min=' + str(round(PERC_MIN, args.dec_places))  + ', max=' + str(round(PERC_MAX, args.dec_places)) +")\n")
     
