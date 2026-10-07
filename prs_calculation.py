@@ -309,7 +309,7 @@ sys.stdout.write('=> OUTPUT VCF written to ' + OFNAME + '\n' )
 
 sys.stdout.write('### PRS\n' )
 sys.stdout.write('=> Raw PRS is ' + str(round(PRS_SUM, args.dec_places)) + ' (min=' + str(round(PRS_SUM_MIN, args.dec_places)) + ', max=' + str(round(PRS_SUM_MAX, args.dec_places))  + ')' +  '\n')
-ZSCORE, MIN_ZSCORE, MAX_ZSCORE = None, None, None
+ZSCORE = None 
 if ANC == "AFR":
     if AFR_MEAN == None and AFR_SD == None:
         sys.stderr.write("Mean and standard deviation for AFR PRS unkonwn\n")

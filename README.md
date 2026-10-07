@@ -64,26 +64,26 @@ PRS template TSV files are available from [./template_tsv](https://github.com/GC
 
 ```
 ### Sample NA12718
-=> Found 308 of 309 PRS variants
-Could not find:
-4	187503758	A	T
-=> Genotypes of 305 variants will be included in PRS calculation
+=> Found 309 of 309 PRS variants
+=> Genotypes of 306 variants will be included in PRS calculation
 ### ANCESTRY CHECK
 AFR data point is -2.546 -0.823 0.577
 EAS data point is 1.73 -1.521 0.423
 EUR data point is 0.292 1.443 0.139
 SAS data point is 0.384 0.345 1.568
-Sample data point is 0.216 1.332 -0.451
-Euclidean distance to AFR data point is 3.652
-Euclidean distance to EAS data point is 3.346
-Euclidean distance to EUR data point is 0.605
-Euclidean distance to SAS data point is 2.253
+Sample data point is 0.208 1.35 -0.425
+Euclidean distance to AFR data point is 3.649 (2.24%)
+Euclidean distance to EAS data point is 3.358 (2.65%)
+Euclidean distance to EUR data point is 0.578 (89.16%)
+Euclidean distance to SAS data point is 2.239 (5.95%)
 => Sample is EUR
 ### WRITING OUTPUT VCF
-=> OUTPUT VCF written to NA12718.canrisk.vcf
+=> OUTPUT VCF written to NA12718.BCAC_309_hg38.canrisk.vcf
 ### PRS
-=> Raw PRS is -1.302
-=> Normalized z-score is -1.573
-=> Left-tailed percentile is 5.791
+=> Raw PRS is -1.386 (min=-1.452, max=-1.218)
+=> Normalized z-score is -1.709 (min=-1.816, max=-1.436)
+=> Left-tailed percentile is 4.37 (min=3.465, max=7.556)
 ```
 
+Percentages in bracketes refer to the inversed squared Euclidean distannces, normalized against the sum of all inversed squared Euclidean distannces.
+`min` and `max` report minimum and maximum possible values under consideration of all possible genotypes of loci for which dosage imputation was applied due to missingnes or too low read depth.
