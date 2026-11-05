@@ -1,6 +1,8 @@
 # PRS_calculation_framework
 A versatile and ready-to-use techincal framework for calculation of polygenic risk score (PRS) values from next-generation sequencing (NGS) data. 
 
+**Please note!** We changed the genotyping approach from `bcftools call -c` to  `bcftools call -m` on Nov 5, 2026, and *strongly recommend* to use the latest software version. Further changes include output to STDOUT and introduction of the `-n` flag (see below). 
+
 ## Overview
 
 PRS calculation starts from mapped sequencing reads in [BAM](https://samtools.github.io/hts-specs/SAMv1.pdf) or [CRAM](https://samtools.github.io/hts-specs/CRAMv3.pdf) file format, and is carried out in two steps:
@@ -22,7 +24,7 @@ PRS calculation starts from mapped sequencing reads in [BAM](https://samtools.gi
 ### Command line call
 
 ```
-bcftools mpileup -f <reference.fa> <BAM|CRAM file> -R <specification.vcf> | bcftools call -c - | bcftools norm -m- -f <reference.fa> -
+bcftools mpileup -f <reference.fa> <BAM|CRAM file> -R <specification.vcf> | bcftools call -m - | bcftools norm -m- -f <reference.fa> -
 ```
 
 Pre-computed input VCF files (`<specification.vcf>`) can be obtained from [./mpileup_vcf](https://github.com/GC-HBOC/PRS_calculation_framework/tree/main/mpileup_vcf/).
@@ -48,6 +50,7 @@ options:
   -o OUTPUT, --output OUTPUT
                         Specification of CanRisk-compatible output VCF file. Default: Input VCF file name with suffix
                         *.canrisk.vcf
+  -n, --novcf           If set, generation of output VCF is omitted (and -o is ignored).
   -a {AFR,EAS,EUR,SAS}, --anc {AFR,EAS,EUR,SAS}
                         Specification of presumed ancestry (AFR, EAS, EUR, or SAS). If set, ancestry check is omitted.
   -ap, --anc_prefix     If set, a prefix specifying predicted or pre-defined ancestry will be added to the output file name.
